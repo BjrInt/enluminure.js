@@ -59,4 +59,4 @@ document.querySelectorAll('.param_input').forEach(() =>
   })
 })
 
-console.log(loaded)
+console.log('loaded')
