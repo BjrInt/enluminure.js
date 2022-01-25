@@ -20,6 +20,7 @@ canvas.width = img.width
 const ctx = canvas.getContext('2d')
 
 const render = () => {
+  console.log('rendered')
   let txtI = 0
 
   ctx.fillStyle = options.invert ? 'white' : 'black'
@@ -54,6 +55,7 @@ render()
 document.querySelectorAll('.param_input').forEach(() => 
   {
     addEventListener('change', ({target}) => {
+      console.log('event fired')
       options[target.name] = target.type === 'checkbox' ? target.checked : target.value
       render()
   })
