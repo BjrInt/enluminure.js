@@ -15,12 +15,11 @@ const options = {
 
 const canvas = document.querySelector('#asciified')
 const img =  document.querySelector('img')
-canvas.height = img.height
-canvas.width = img.width
 const ctx = canvas.getContext('2d')
 
 const render = () => {
-  console.log('rendered')
+  canvas.height = img.height
+  canvas.width = img.width
   let txtI = 0
 
   ctx.fillStyle = options.invert ? 'white' : 'black'
@@ -50,15 +49,14 @@ const render = () => {
   }, options.tileSize, 0)
 }
 
-render()
 
 document.querySelectorAll('.param_input').forEach(() => 
-  {
-    addEventListener('change', ({target}) => {
-      console.log('event fired')
-      options[target.name] = target.type === 'checkbox' ? target.checked : target.value
-      render()
+{
+  addEventListener('change', ({target}) => {
+    options[target.name] = target.type === 'checkbox' ? target.checked : target.value
+    render()
   })
 })
 
-console.log('loaded')
+// Fix netlify not loading assets
+setTimeout(render, 600)
