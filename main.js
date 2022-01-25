@@ -58,3 +58,5 @@ document.querySelectorAll('.param_input').forEach(() =>
       render()
   })
 })
+
+console.log(loaded)
