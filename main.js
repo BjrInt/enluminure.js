@@ -13,8 +13,8 @@ const options = {
 }
 
 
-const canvas = document.querySelector('#asciified')
 const img =  document.querySelector('img')
+const canvas = document.querySelector('#asciified')
 const ctx = canvas.getContext('2d')
 
 const render = () => {
@@ -50,12 +50,20 @@ const render = () => {
 }
 
 
-document.querySelectorAll('.param_input').forEach(() => 
-{
+document.querySelectorAll('.param_input').forEach(() => {
   addEventListener('change', ({target}) => {
     options[target.name] = target.type === 'checkbox' ? target.checked : target.value
     render()
   })
+})
+
+document.querySelector('#change_file').addEventListener('change', e => {
+  const reader = new FileReader()
+  reader.addEventListener('load', (event) => {
+    img.src = event.target.result
+    render()
+  })
+  reader.readAsDataURL(e.target.files[0])
 })
 
 // Fix netlify not loading assets

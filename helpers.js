@@ -37,8 +37,8 @@ export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8,
   CANVAS.width = width
 
   const ctx = CANVAS.getContext('2d')
-  ctx.clearRect(0, 0, height, width)
-  ctx.drawImage(picture, 0, 0, height, width)
+  ctx.clearRect(0, 0, width, height)
+  ctx.drawImage(picture, 0, 0, width, height)
 
   const r = []
 
