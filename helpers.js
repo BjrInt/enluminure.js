@@ -31,7 +31,8 @@ export const getCharacterLuminance = (letter, tileSize=8) => {
 
 const last = ar => ar[ar.length - 1]
 
-export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8, offset=4) => {
+export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8) => {
+  const offset = tileSize / 2 | 0
   const { height, width } = picture
   CANVAS.height = height
   CANVAS.width = width
