@@ -85,17 +85,14 @@ export const hueRotations = {
   }
 }
 
-export const characterDistribution = {
-  'column' : (charpool, row, column) => {
-
-  },
+export const characterDistributions = {
   'row' : (charpool, row, column) => {
-
+    return charpool.charAt(row % charpool.length)
+  },
+  'column' : (charpool, row, column) => {
+    return charpool.charAt(column % charpool.length)
   },
   'random' : (charpool, row, column) => {
-
-  },
-  'luminance' : (charpool, row, column) => {
-
+    return charpool.charAt(Math.random() * charpool.length | 0)
   }
 }

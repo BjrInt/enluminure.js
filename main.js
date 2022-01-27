@@ -1,5 +1,5 @@
 import './style.css'
-import { getTiles, hueRotations } from "./helpers"
+import { characterDistributions, getTiles, hueRotations } from "./helpers"
 
 const options = {
   luminanceFactor: 100,
@@ -10,7 +10,8 @@ const options = {
   tileSize: 6,
   fontSize: 6,
   characterPool: 'ELONMUSK',
-  hueRotation: 'linear forward'
+  hueRotation: 'linear forward',
+  characterDistribution: 'row'
 }
 
 
@@ -45,7 +46,11 @@ const render = () => {
 
     
     ctx.fillStyle = `hsl(${hue}, ${options.saturation}%, ${luminance}%)`
-    ctx.fillText(options.characterPool.charAt(txtI % options.characterPool.length), i*options.tileSize, j*options.tileSize)
+    ctx.fillText(
+      characterDistributions[options.characterDistribution](options.characterPool, i, j), 
+      i*options.tileSize, 
+      j*options.tileSize
+    )
 
   }, options.tileSize, 0)
 }
@@ -56,6 +61,13 @@ for (const hueOptions in hueRotations) {
   opt.innerText = hueOptions
   opt.value = hueOptions
   hueRotationSelect.appendChild(opt)
+}
+const characterDistributionSelect = document.querySelector('#charDistribution')
+for (const cdOptions in characterDistributions) {
+  const opt = document.createElement('option')
+  opt.innerText = cdOptions
+  opt.value = cdOptions
+  characterDistributionSelect.appendChild(opt)
 }
 
 document.querySelectorAll('.param_input').forEach(el => {
