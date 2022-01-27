@@ -59,7 +59,7 @@ export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8,
 
   for(let i=0; i<width/tileSize; i++){
     for(let j=0; j<height/tileSize; j++){
-      const index = j * width * tileSize * 4 + i * tileSize * 4
+      const index = j * height * tileSize * 4 + i * tileSize * 4
 
       const localID = [
         imageData[index],
