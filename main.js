@@ -15,6 +15,8 @@ const options = {
   focusGradientOpacity: 0
 }
 
+// fix Netlify deployment bugs
+const NETLIFY_DELAY = window.location.href.match('localhost') ? 5 : 300
 
 const img =  document.querySelector('img')
 const canvas = document.querySelector('#asciified')
@@ -86,4 +88,6 @@ document.querySelector('#change_file').addEventListener('change', e => {
 })
 
 render()
-img.addEventListener('load', render)
+img.addEventListener('load', () => {
+  setTimeout(render, NETLIFY_DELAY)
+})
