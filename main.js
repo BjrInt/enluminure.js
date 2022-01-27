@@ -50,8 +50,8 @@ const render = () => {
 }
 
 
-document.querySelectorAll('.param_input').forEach(() => {
-  addEventListener('change', ({target}) => {
+document.querySelectorAll('.param_input').forEach(el => {
+  el.addEventListener('change', ({target}) => {
     options[target.name] = target.type === 'checkbox' ? target.checked : target.value
     render()
   })
