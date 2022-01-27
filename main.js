@@ -87,4 +87,4 @@ document.querySelector('#change_file').addEventListener('change', e => {
 })
 
 // Fix netlify not loading assets
-setTimeout(render, 600)
+setTimeout(render, window.location.href.match('localhost') ? 50 : 600)
