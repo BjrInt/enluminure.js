@@ -41,16 +41,20 @@ export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8)
   ctx.clearRect(0, 0, width, height)
   ctx.drawImage(picture, 0, 0, width, height)
 
-  const r = []
+  const imageData = ctx.getImageData(0, 0, height, width).data
 
   for(let i=0; i<width/tileSize; i++){
-    r.push([])
     for(let j=0; j<height/tileSize; j++){
-      const imageData = ctx.getImageData(i * tileSize + offset, j * tileSize + offset, 1, 1).data
-      cb(imageData, i, j)
-      last(r).push(imageData)
+      const index = j * width * tileSize * 4 + i * tileSize * 4
+
+      const localID = [
+        imageData[index],
+        imageData[index+1],
+        imageData[index+2],
+      ]
+      cb(localID, i, j)
     }
   }
 
-  return r
+  return imageData
 }
