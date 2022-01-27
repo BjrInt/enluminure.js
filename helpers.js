@@ -29,8 +29,6 @@ export const getCharacterLuminance = (letter, tileSize=8) => {
   return sum
 }
 
-const last = ar => ar[ar.length - 1]
-
 export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8) => {
   const offset = tileSize / 2 | 0
   const { height, width } = picture
@@ -57,4 +55,47 @@ export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8)
   }
 
   return imageData
+}
+
+export const hueRotations = {
+  'linear forward': (minHue, maxHue, iterator, direction) => {
+    let hue = iterator+direction
+    if(hue > maxHue || hue < minHue)
+      hue = minHue
+    
+    return [hue, direction]
+  },
+  'linear back and forth': (minHue, maxHue, iterator, direction) => {
+    let hue = iterator + direction
+    if(hue > maxHue)
+      direction = -1
+    if(hue < minHue)
+      direction = 1
+    
+    return [hue, direction]
+  },
+  'random': (minHue, maxHue, iterator, direction) => {
+    const seed = Math.random() * (maxHue - minHue) + minHue | 0
+    return [seed, direction]
+  },
+  'scatter': (minHue, maxHue, iterator, direction) => {
+    const seed = (Math.sin(iterator / (maxHue - minHue) * Math.PI * 2)  + 1) / 2 
+    const hue = seed * (maxHue - minHue) + minHue
+    return [hue, direction]
+  }
+}
+
+export const characterDistribution = {
+  'column' : (charpool, row, column) => {
+
+  },
+  'row' : (charpool, row, column) => {
+
+  },
+  'random' : (charpool, row, column) => {
+
+  },
+  'luminance' : (charpool, row, column) => {
+
+  }
 }

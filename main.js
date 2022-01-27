@@ -1,5 +1,5 @@
 import './style.css'
-import { getTiles } from "./helpers"
+import { getTiles, hueRotations } from "./helpers"
 
 const options = {
   luminanceFactor: 100,
@@ -9,7 +9,8 @@ const options = {
   saturation: 100,
   tileSize: 6,
   fontSize: 6,
-  characterPool: 'ELONMUSK'
+  characterPool: 'ELONMUSK',
+  hueRotation: 'linear forward'
 }
 
 
@@ -30,7 +31,7 @@ const render = () => {
 
   const minHue = Math.min(options.hueMin, options.hueMax)
   const maxHue = Math.max(options.hueMin, options.hueMax)
-  let hue = minHue
+  let [hue, direction] = hueRotations[options.hueRotation](minHue, maxHue, minHue, 1)
 
   getTiles(img, (id, i, j) => {
     const [r, g, b] = id
@@ -38,17 +39,24 @@ const render = () => {
     if(options.invert)
       luminance = 100 - luminance
     
-    if(hue > maxHue || hue < minHue)
-      hue = minHue
+    const hueR = hueRotations[options.hueRotation](minHue, maxHue, hue, direction)
+    hue = hueR[0]
+    direction = hueR[1]
+
     
     ctx.fillStyle = `hsl(${hue}, ${options.saturation}%, ${luminance}%)`
     ctx.fillText(options.characterPool.charAt(txtI % options.characterPool.length), i*options.tileSize, j*options.tileSize)
 
-    hue++
-    txtI++
   }, options.tileSize, 0)
 }
 
+const hueRotationSelect = document.querySelector('#hueRotation')
+for (const hueOptions in hueRotations) {
+  const opt = document.createElement('option')
+  opt.innerText = hueOptions
+  opt.value = hueOptions
+  hueRotationSelect.appendChild(opt)
+}
 
 document.querySelectorAll('.param_input').forEach(el => {
   el.addEventListener('change', ({target}) => {
