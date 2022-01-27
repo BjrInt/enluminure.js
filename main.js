@@ -11,7 +11,8 @@ const options = {
   fontSize: 6,
   characterPool: 'ELONMUSK',
   hueRotation: 'linear forward',
-  characterDistribution: 'row'
+  characterDistribution: 'row',
+  focusGradientOpacity: 0
 }
 
 
@@ -22,7 +23,6 @@ const ctx = canvas.getContext('2d')
 const render = () => {
   canvas.height = img.height
   canvas.width = img.width
-  let txtI = 0
 
   ctx.fillStyle = options.invert ? 'white' : 'black'
   ctx.fillRect(0, 0, img.width, img.height)
@@ -52,7 +52,7 @@ const render = () => {
       j*options.tileSize
     )
 
-  }, options.tileSize, 0)
+  }, options.tileSize, options.focusGradientOpacity)
 }
 
 const hueRotationSelect = document.querySelector('#hueRotation')

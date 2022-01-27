@@ -29,8 +29,7 @@ export const getCharacterLuminance = (letter, tileSize=8) => {
   return sum
 }
 
-export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8) => {
-  const offset = tileSize / 2 | 0
+export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8, focusGradientOpacity=0) => {
   const { height, width } = picture
   CANVAS.height = height
   CANVAS.width = width
@@ -38,6 +37,23 @@ export const getTiles = (picture, cb=(imageData, row, column) => {}, tileSize=8)
   const ctx = CANVAS.getContext('2d')
   ctx.clearRect(0, 0, width, height)
   ctx.drawImage(picture, 0, 0, width, height)
+
+  const imgRadius = Math.sqrt(width**2 + height**2)
+
+  const focusGradient = ctx.createRadialGradient(
+    width / 2 | 0, 
+    height / 2 | 0,
+    Math.sqrt(imgRadius),
+    0,
+    0,
+    imgRadius
+  )
+  focusGradient.addColorStop(0, 'transparent')
+  focusGradient.addColorStop(1, 'black')
+  ctx.globalAlpha = focusGradientOpacity / 100
+  ctx.fillStyle = focusGradient
+  ctx.fillRect(0, 0, width, height)
+  ctx.globalAlpha = 1
 
   const imageData = ctx.getImageData(0, 0, height, width).data
 
