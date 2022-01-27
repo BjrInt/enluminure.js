@@ -95,7 +95,7 @@ export const hueRotations = {
     return [seed, direction]
   },
   'scatter': (minHue, maxHue, iterator, direction) => {
-    const seed = (Math.sin(iterator / (maxHue - minHue) * Math.PI * 2)  + 1) / 2 
+    const seed = (Math.sin(iterator % (Math.PI * 100)) + 1) / 2
     const hue = seed * (maxHue - minHue) + minHue
     return [hue, direction]
   }
