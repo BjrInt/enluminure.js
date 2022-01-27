@@ -81,10 +81,9 @@ document.querySelector('#change_file').addEventListener('change', e => {
   const reader = new FileReader()
   reader.addEventListener('load', (event) => {
     img.src = event.target.result
-    render()
   })
   reader.readAsDataURL(e.target.files[0])
 })
 
-// Fix netlify not loading assets
-setTimeout(render, window.location.href.match('localhost') ? 50 : 600)
+render()
+img.addEventListener('load', render)
