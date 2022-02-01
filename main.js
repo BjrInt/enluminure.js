@@ -1,5 +1,5 @@
 import './style.css'
-import { characterDistributions, getTiles, hueRotations } from "./helpers"
+import { characterDistributions, getTiles, hueRotations, jitter } from "./helpers"
 
 const options = {
   luminanceFactor: 100,
@@ -12,7 +12,10 @@ const options = {
   characterPool: 'ELONMUSK',
   hueRotation: 'linear forward',
   characterDistribution: 'row',
-  focusGradientOpacity: 0
+  focusGradientOpacity: 0,
+  jitterChance: 0,
+  maxJitterOffsetX: 0,
+  maxJitterOffsetY: 0,
 }
 
 // fix Netlify deployment bugs
@@ -50,8 +53,8 @@ const render = () => {
     ctx.fillStyle = `hsl(${hue}, ${options.saturation}%, ${luminance}%)`
     ctx.fillText(
       characterDistributions[options.characterDistribution](options.characterPool, i, j), 
-      i*options.tileSize, 
-      j*options.tileSize
+      jitter(i*options.tileSize, options.jitterChance / 100, options.maxJitterOffsetX / 1000 * canvas.width), 
+      jitter(j*options.tileSize, options.jitterChance / 100, options.maxJitterOffsetY / 1000 * canvas.height)
     )
 
   }, options.tileSize, options.focusGradientOpacity)

@@ -112,3 +112,11 @@ export const characterDistributions = {
     return charpool.charAt(Math.random() * charpool.length | 0)
   }
 }
+
+export const jitter = (position, threshold, maxOffset) => {
+  const seed = Math.random() 
+  if(threshold < seed)
+    return position
+  
+  return position + (Math.floor((seed - 0.5) * maxOffset))
+}
