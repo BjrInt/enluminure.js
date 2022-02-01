@@ -7,6 +7,10 @@
     <title>Asciify Elon</title>
   </head>
   <body>
+    <aside class="presets">
+      <button id="export-preset">EXPORT PRESET</button>
+      <button id="import-preset">IMPORT PRESET</button>
+    </aside>
 
     <main id="app">
       <section id="pics">
@@ -20,70 +24,76 @@
 
       <div>
         <h1>Asciify ELON</h1>
+
+        <div class="fieldset">
+          <label>Background color</label>
+          <input type="color" id="backgroundColor" class="param_input" value="#000" />
+        </div>
+
         <div class="fieldset">
           <label>Luminance factor</label>
-          <input type="range" name="luminanceFactor" class="param_input" min="50" max="200" value="100" step="1" />
+          <input type="range" id="luminanceFactor" class="param_input" min="50" max="200" value="100" step="1" />
         </div>
 
         <div class="fieldset">
           <label>Minimum hue</label>
-          <input type="range" name="hueMin" class="param_input" min="0" max="360" value="0" step="1" />
+          <input type="range" id="hueMin" class="param_input" min="0" max="360" value="0" step="1" />
         </div>
 
         <div class="fieldset">
           <label>Maximum hue</label>
-          <input type="range" name="hueMax" class="param_input" min="0" max="360" value="10" step="1" />
+          <input type="range" id="hueMax" class="param_input" min="0" max="360" value="10" step="1" />
         </div>
 
         <div class="fieldset">
           <label>Saturation</label>
-          <input type="range" name="saturation" class="param_input" min="0" max="100" value="100" step="1" />
+          <input type="range" id="saturation" class="param_input" min="0" max="100" value="100" step="1" />
         </div>
 
         <div class="fieldset">
           <label>Font-size</label>
-          <input type="range" name="fontSize" class="param_input" min="2" max="20" value="6" step="1" />
+          <input type="range" id="fontSize" class="param_input" min="2" max="20" value="6" step="1" />
         </div>
 
         <div class="fieldset">
           <label>Tile size</label>
-          <input type="range" name="tileSize" class="param_input" min="2" max="20" value="6" step="1" />
+          <input type="range" id="tileSize" class="param_input" min="2" max="20" value="6" step="1" />
         </div>
 
         <div class="fieldset">
           <label>Focus Gradient opacity</label>
-          <input type="range" name="focusGradientOpacity" class="param_input" min="0" max="100" value="0" step="5" />
+          <input type="range" id="focusGradientOpacity" class="param_input" min="0" max="100" value="0" step="5" />
         </div>
 
         <div class="fieldset">
           <label>Jitter chance</label>
-          <input type="range" name="jitterChance" class="param_input" min="0" max="100" value="0" step="5" />
+          <input type="range" id="jitterChance" class="param_input" min="0" max="100" value="0" step="5" />
         </div>
 
         <div class="fieldset">
           <label>Max Jitter offset (X-axis)</label>
-          <input type="range" name="maxJitterOffsetX" class="param_input" min="0" max="100" value="0" step="5" />
+          <input type="range" id="maxJitterOffsetX" class="param_input" min="0" max="100" value="0" step="5" />
         </div>
 
         <div class="fieldset">
           <label>Max Jitter offset (Y-axis)</label>
-          <input type="range" name="maxJitterOffsetY" class="param_input" min="0" max="100" value="0" step="5" />
+          <input type="range" id="maxJitterOffsetY" class="param_input" min="0" max="100" value="0" step="5" />
         </div>
 
         <div class="fieldset">
           <label>Character set</label>
-          <input type="text" name="characterPool" class="param_input" value="ELONMUSK" />
+          <input type="text" id="characterPool" class="param_input" value="ELONMUSK" />
         </div>
 
         <div class="fieldset">
           <label>Hue Rotation</label>
-          <select name="hueRotation" class="param_input" id="hueRotation">
+          <select id="hueRotation" class="param_input">
           </select>
         </div>
 
         <div class="fieldset">
           <label>Character distribution</label>
-          <select name="characterDistribution" class="param_input" id="charDistribution">
+          <select id="characterDistribution" class="param_input">
           </select>
         </div>
       </div>

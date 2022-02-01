@@ -30,3 +30,60 @@ label{
 input{
   width: 300px;
 }
+
+.presets{
+  position: fixed;
+  top: 25px;
+  left: 50px;
+}
+
+#export-preset{
+  background-color: limegreen;
+  color: darkgreen;
+  border-radius: 5px;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+#import-preset{
+  background-color: darksalmon;
+  color: white;
+  border-radius: 5px;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.modal-overlay{
+  background-color: #000000AA;
+  position: absolute;
+  z-index: 300;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+textarea{
+  background: transparent;
+  color: #FFF;
+  width: 600px;
+  height: 300px;
+  display: block;
+}
+
+.load-button{
+  background-color: limegreen;
+  color: darkgreen;
+  border-radius: 5px;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  margin: 10px 0;
+}
