@@ -53,23 +53,12 @@ class Asciify{
     this.drawCanvas.height = this.dimensions.h
   }
 
-  private imageLoader(file: any) : Promise<HTMLImageElement> {
+  private imageLoader(file: File) : Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.addEventListener('load', () => {
-        const img = new Image()
-        const { result } = reader
-
-        if(!result)
-          throw Error('Cannot read file')
-        
-        img.src = result.toString()
-        return resolve(img)
-      })
-      
-      reader.addEventListener('error', (err) => reject(err) )
-
-      reader.readAsDataURL(file)
+      const img = new Image()
+      img.addEventListener('load', () => resolve(img))
+      img.addEventListener('error', err => reject(err))
+      img.src = URL.createObjectURL(file)
     })
   }
 
@@ -107,13 +96,17 @@ class Asciify{
   }
 
   public async loadImage(file: File){
-    const img = await this.imageLoader(file)
-
-    this.setDimensions(img.width, img.height)
-
-    const ctx = this.refCanvas.getContext('2d') 
-    ctx?.drawImage(img, 0, 0)
-    this.imageData = ctx?.getImageData(0, 0, this.dimensions.w, this.dimensions.h)
+    try{
+      const img = await this.imageLoader(file)
+      this.setDimensions(img.width, img.height)
+  
+      const ctx = this.refCanvas.getContext('2d') 
+      ctx?.drawImage(img, 0, 0)
+      this.imageData = ctx?.getImageData(0, 0, this.dimensions.w, this.dimensions.h)
+    }
+    catch(err){
+      throw TypeError('Invalid input (not an image, or unsupported format)')
+    }
   }
 
   public setOptions(options: Partial<AsciifyOptionsType>){
