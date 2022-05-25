@@ -14,14 +14,14 @@ class Asciify{
   private imageData?: ImageData
 
   private getHueRotation = {
-    [HueRotations.LINEAR_FW]: (minHue: number, maxHue: number, iterator:number, direction:number) : NextHueType => {
+    [HueRotations.LINEAR_FW]: (minHue: number, maxHue: number, direction:number, iterator:number) : NextHueType => {
       let hue = iterator+direction
       if(hue > maxHue || hue < minHue)
         hue = minHue
       
       return [hue, direction]
     },
-    [HueRotations.LINEAR_FWBW]: (minHue: number, maxHue: number, iterator:number, direction:number) : NextHueType => {
+    [HueRotations.LINEAR_FWBW]: (minHue: number, maxHue: number, direction:number, iterator:number) : NextHueType => {
       let hue = iterator + direction
       if(hue > maxHue)
         direction = -1
@@ -30,11 +30,11 @@ class Asciify{
       
       return [hue, direction]
     },
-    [HueRotations.RANDOM]: (minHue: number, maxHue: number, iterator:number, direction:number) : NextHueType => {
+    [HueRotations.RANDOM]: (minHue: number, maxHue: number, direction:number) : NextHueType => {
       const seed = Math.random() * (maxHue - minHue) + minHue | 0
       return [seed, direction]
     },
-    [HueRotations.SCATTER]: (minHue: number, maxHue: number, iterator:number, direction:number) : NextHueType => {
+    [HueRotations.SCATTER]: (minHue: number, maxHue: number, direction:number, iterator:number) : NextHueType => {
       const seed = (Math.sin(iterator % (Math.PI * 100)) + 1) / 2
       const hue = seed * (maxHue - minHue) + minHue
       return [hue, direction]
@@ -125,7 +125,7 @@ class Asciify{
     const colNb = this.dimensions.w / this.options.tileSize
     const minHue = Math.min(this.options.hueMin, this.options.hueMax)
     const maxHue = Math.max(this.options.hueMin, this.options.hueMax)
-    let [hue, direction] = this.getHueRotation[this.options.hueRotation](minHue, maxHue, minHue, 1)
+    let [hue, direction] = this.getHueRotation[this.options.hueRotation](minHue, maxHue, 1, minHue)
 
     const numChannels = this.imageData.data.length / (this.dimensions.h * this.dimensions.w)
     if(numChannels !== 4)
@@ -164,7 +164,7 @@ class Asciify{
           this.jitter(row * this.options.tileSize, this.options.jitterChance, this.options.maxJitterOffsetY)
         )
 
-        const nextHue = this.getHueRotation[this.options.hueRotation](minHue, maxHue, hue, direction)
+        const nextHue = this.getHueRotation[this.options.hueRotation](minHue, maxHue, direction, hue)
         hue = nextHue[0]
         direction = nextHue[1] 
       }
