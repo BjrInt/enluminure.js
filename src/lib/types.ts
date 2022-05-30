@@ -8,6 +8,7 @@ export enum HueRotations {
 export enum CharacterDistributions {
   COLUMN,
   ROW,
+  RANDOM
 }
 
 export type NextHueType = [number, number]
