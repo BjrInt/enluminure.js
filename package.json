@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "compile": "tsc ./src/ts/enluminure.ts --outDir ./src/js/",
     "preview": "vite preview"
   },
   "devDependencies": {
