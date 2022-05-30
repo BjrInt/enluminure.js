@@ -6,7 +6,7 @@ import {
   NextHueType
 } from './types'
 
-class Asciify{
+class Enluminure{
   private refCanvas: HTMLCanvasElement
   private drawCanvas: HTMLCanvasElement
   private options: AsciifyOptionsType
@@ -95,7 +95,7 @@ class Asciify{
     return this
   }
 
-  public async loadImage(file: File){
+  public async loadImage(file: File) : Promise<number | undefined>{
     try{
       const img = await this.imageLoader(file)
       this.setDimensions(img.width, img.height)
@@ -103,13 +103,15 @@ class Asciify{
       const ctx = this.refCanvas.getContext('2d') 
       ctx?.drawImage(img, 0, 0)
       this.imageData = ctx?.getImageData(0, 0, this.dimensions.w, this.dimensions.h)
+
+      return (this.imageData?.data.length || 0) / 4
     }
     catch(err){
       throw TypeError('Invalid input (not an image, or unsupported format)')
     }
   }
 
-  public setOptions(options: Partial<AsciifyOptionsType>){
+  public setOptions(options: Partial<AsciifyOptionsType>) : void {
     this.options = { ...this.options, ...options}
     
     if(options.hasOwnProperty('tileSize') && this.imageData !== undefined){
@@ -117,7 +119,7 @@ class Asciify{
     }
   }
 
-  public render(){
+  public render(target?: string) : string {
     if(!this.imageData)
       throw TypeError('No loaded image')
     
@@ -170,8 +172,8 @@ class Asciify{
       }
     }
     
-    return this.drawCanvas
+    return this.drawCanvas.toDataURL(target)
   }
 }
 
-export default Asciify
+export default Enluminure
