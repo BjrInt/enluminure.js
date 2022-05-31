@@ -1,18 +1,53 @@
-import Asciify from "../src/ts/enluminure"
-import { CharacterDistributions } from "../src/ts/types"
+import Enluminure from "../src/enluminure"
+import { CharacterDistributions, HueRotations } from "../src/types"
 
-const asc = new Asciify({ tileSize: 10, fontSize: 12, characterPool: 'iokhmfhsdMdjbjz', characterDistribution: CharacterDistributions.RANDOM })
+const options = [
+  {
+    tileSize: 8, 
+    fontSize: 10, 
+    characterDistribution: CharacterDistributions.RANDOM,
+    characterPool: 'X', 
+    hueMax: 130,
+    hueMin: 0,
+    hueRotation: HueRotations.SCATTER,
+  },
 
-document.querySelector('#change_file')?.addEventListener('change', async ({target}) => {
-  // @ts-ignore
-  const file = target.files[0]
+  {
+    tileSize: 4, 
+    fontSize: 9, 
+    characterDistribution: CharacterDistributions.RANDOM,
+    hueRotation: HueRotations.RANDOM,
+    characterPool: '(Û)', 
+    hueMax: 200,
+    hueMin: 140,
+    jitterProbability: .65,
+    maxJitterOffsetX: 60,
+    maxJitterOffsetY: 60,
+    luminanceFactor: 150,
+  },
+
+  {
+    tileSize: 12, 
+    fontSize: 15,
+    fontFamily: 'serif', 
+    hueRotation: HueRotations.SCATTER,
+    characterPool: 'ENLUMINURE', 
+    hueMax: 360,
+    hueMin: 290,
+    backgroundColor: "red"
+  }
+]
+
+const load = async () => {
+  for(const option of options) {
+    const i = new Enluminure(option)
+    await i.loadImage('./pics/original.jpg')
+    const src = i.render()
   
-  await asc.loadImage(file)
-  const result = asc.render()
+    const img = document.createElement('img')
+    img.src = src
+    document.querySelector('#pics')?.appendChild(img)
+  }
+}
 
-  document.querySelector('#asciified')?.remove()
-  const img = document.createElement('img')
-  img.id = 'asciified'
-  img.src = result
-  document.querySelector('#pics')?.appendChild(img)
-})
+load()

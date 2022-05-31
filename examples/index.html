@@ -15,11 +15,9 @@
     <main id="app">
       <section id="pics">
         <label for="change_file" style="cursor: pointer;">
-          <img src="./pics/original.jpg" alt="Jesus">
+          <img src="./pics/original.jpg" id="src_picture" alt="Jesus">
         </label>
         <input type="file" name="change_file" id="change_file" style="display: none;">
-
-        <canvas id="asciified"></canvas>
       </section>
 
       <!-- <div>
@@ -67,7 +65,7 @@
 
         <div class="fieldset">
           <label>Jitter chance</label>
-          <input type="range" id="jitterChance" class="param_input" min="0" max="100" value="0" step="5" />
+          <input type="range" id="jitterProbability" class="param_input" min="0" max="100" value="0" step="5" />
         </div>
 
         <div class="fieldset">
@@ -99,6 +97,6 @@
       </div> -->
     </main>
 
-    <script type="module" src="./src/main.ts"></script>
+    <script type="module" src="./main.ts"></script>
   </body>
 </html>
