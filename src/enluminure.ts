@@ -140,6 +140,10 @@ class Enluminure{
     return this
   }
 
+  public getOptions(){
+    return this.options
+  }
+
   public render(target?: string) : string {
     if(!this.imageData)
       throw TypeError('No loaded image')
@@ -150,9 +154,7 @@ class Enluminure{
     const maxHue = Math.max(this.options.hueMin, this.options.hueMax)
     let [hue, direction] = this.getHueRotation[this.options.hueRotation](minHue, maxHue, 1, minHue)
 
-    const numChannels = this.imageData.data.length / (this.dimensions.h * this.dimensions.w)
-    if(numChannels !== 4)
-      throw Error('Unsupported image data')
+    const numChannels = 4
     
     const ctx = this.drawCanvas.getContext('2d')
     if(!ctx)
