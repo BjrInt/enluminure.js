@@ -41,12 +41,8 @@ class Enluminure{
     }
   }
 
-  private getClosestMultiple(size: number, divisor: number){
-    return size - size % divisor
-  }
-
   private setDimensions(width: number, height: number){
-    this.dimensions = { w: this.getClosestMultiple(width, this.options.tileSize), h: this.getClosestMultiple(height, this.options.tileSize) }
+    this.dimensions = { w: width, h: height }
     this.refCanvas.width = this.dimensions.w
     this.refCanvas.height = this.dimensions.h
     this.drawCanvas.width = this.dimensions.w
@@ -132,10 +128,6 @@ class Enluminure{
 
   public setOptions(options: Partial<AsciifyOptionsType>){
     this.options = { ...this.options, ...options}
-    
-    if(options.hasOwnProperty('tileSize') && this.imageData !== undefined){
-      this.setDimensions(this.imageData?.width, this.imageData?.height)
-    }
 
     return this
   }
@@ -148,8 +140,8 @@ class Enluminure{
     if(!this.imageData)
       throw TypeError('No loaded image')
     
-    const rowNb = this.dimensions.h / this.options.tileSize
-    const colNb = this.dimensions.w / this.options.tileSize
+    const rowNb = this.dimensions.h / this.options.tileSize | 0
+    const colNb = this.dimensions.w / this.options.tileSize | 0
     const minHue = Math.min(this.options.hueMin, this.options.hueMax)
     const maxHue = Math.max(this.options.hueMin, this.options.hueMax)
     let [hue, direction] = this.getHueRotation[this.options.hueRotation](minHue, maxHue, 1, minHue)
@@ -160,11 +152,15 @@ class Enluminure{
     if(!ctx)
       throw TypeError('Canvas unsupported')
     
+    this.drawCanvas.width = this.options.tileSize * colNb
+    this.drawCanvas.height = this.options.tileSize * rowNb
+    
     ctx.fillStyle = this.options.backgroundColor
     ctx.fillRect(0, 0, this.dimensions.w, this.dimensions.h)
     ctx.font = this.options.fontSize + 'px ' + this.options.fontFamily
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
+
 
     for(let row=0; row<rowNb; row++){
       for(let col=0; col<colNb; col++){
