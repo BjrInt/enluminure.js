@@ -125,7 +125,7 @@ All parameters give deterministic output excepted the one marked with a **\***
 
 <tr>
   <td>characterDistribution</td>
-  <td>see <a href="./src/ts/types.ts#L8">CharacterDistibutions</a> enum</td>
+  <td>see <a href="./src/types.ts#L8">CharacterDistibutions</a> enum</td>
   <td>ROW</td>
   <td>Defines how each letter is pasted onto the enluminure. On ROW mode each character from the <code>characterPool</code> is laid from left to right, on COLUMN from top to bottom, on RANDOM in no specific order</td>
 </tr>
@@ -174,7 +174,7 @@ All parameters give deterministic output excepted the one marked with a **\***
 
 <tr>
   <td>hueRotation</td>
-  <td>see <a href="./src/ts/types.ts#L1">HueRotations</a> enum</td>
+  <td>see <a href="./src/types.ts#L1">HueRotations</a> enum</td>
   <td>LINEAR_FORWARD</td>
   <td>Defines how the colors are distributed on the enluminure. The hue is selected from the HSL circle, either on a <strong>forward</strong> motion, a <strong>back and forth motion</strong>, a <strong>random</strong> value, or with a trigonometric function crafting <strong>scattered</strong> hues on the generated enluminure.</td>
 </tr>
