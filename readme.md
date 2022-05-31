@@ -4,6 +4,14 @@
 
 Although the french term means creating a picture alongside a written text, this javascript library turns any picture into a a composition of colorful letters. It uses canvases internally to perform the conversion, so it only works inside of browsers.
 
+## How does it work
+
+Enluminure is a really simple algorithm that takes its inspiration from ASCII art. It works by first slicing a source picture into tiles. These tiles are then iterated over and their lightness is extracted. When the extracting process is done, the rendering starts by assigning a letter from a given pool (a word, a random chain of characters, ...) for each of the tiles. This letter will be as bright as the source tile, but with a different hue.
+
+This is as simple as that, but sometimes the simpler solutions are usually the most effective.
+
+Below you'll find a detail from a Boticelli painting and some enluminures rendering of it.
+
 <table align="center">
   <tr>
     <td><img src="./examples/pics/original.jpg" /></td>
@@ -255,7 +263,7 @@ const enluminure = new Enluminure()
 const fileInput = document.createElement('input')
 fileInput.type = 'file'
 fileInput.addEventListener('change', async e => {
-  await enluminure.loadImage(e.target.value)
+  await enluminure.loadImage(e.target.files[0])
 
   const result = enluminure.render()
   const img = document.createElement('img')
