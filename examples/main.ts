@@ -1,53 +1,56 @@
 import Enluminure from "../src/enluminure"
 import { CharacterDistributions, HueRotations } from "../src/types"
 
-const options = [
-  {
-    tileSize: 8, 
-    fontSize: 10, 
-    characterDistribution: CharacterDistributions.RANDOM,
-    characterPool: 'X', 
-    hueMax: 130,
-    hueMin: 0,
-    hueRotation: HueRotations.SCATTER,
-  },
+const enluminure = new Enluminure()
 
-  {
-    tileSize: 4, 
-    fontSize: 9, 
-    characterDistribution: CharacterDistributions.RANDOM,
-    hueRotation: HueRotations.RANDOM,
-    characterPool: '(Û)', 
-    hueMax: 200,
-    hueMin: 140,
-    jitterProbability: .65,
-    maxJitterOffsetX: 60,
-    maxJitterOffsetY: 60,
-    luminanceFactor: 150,
-  },
-
-  {
-    tileSize: 12, 
-    fontSize: 15,
-    fontFamily: 'serif', 
-    hueRotation: HueRotations.SCATTER,
-    characterPool: 'ENLUMINURE', 
-    hueMax: 360,
-    hueMin: 290,
-    backgroundColor: "red"
-  }
-]
-
-const load = async () => {
-  for(const option of options) {
-    const i = new Enluminure(option)
-    await i.loadImage('./pics/original.jpg')
-    const src = i.render()
-  
-    const img = document.createElement('img')
-    img.src = src
-    document.querySelector('#pics')?.appendChild(img)
-  }
+const populateSelect = (select, _enum) => {
+  Object.values(_enum).forEach(v => {
+    const option = document.createElement('option')
+    option.value = v
+    option.innerText = v
+    select?.appendChild(option)
+  })
 }
 
-load()
+populateSelect(document.getElementById('hueRotation'), HueRotations)
+populateSelect(document.getElementById('characterDistribution'), CharacterDistributions)
+
+
+Object.entries(enluminure.getOptions()).forEach(([optionName, optionValue]) => {
+  const input = document.getElementById(optionName)
+  if(input){
+    input.value = optionValue
+  }
+})
+
+const renderAndDisplay = () => {
+  const result = enluminure.render()
+
+  let img : HTMLImageElement = document.querySelector('#enluminure')
+  if(!img){
+    img = document.createElement('img')
+    img.id = 'enluminure'
+    document.querySelector('#pics')?.appendChild(img)
+  }
+
+  img.src = result
+}
+
+document
+.querySelectorAll('.param_input')
+.forEach(item => (
+  item.addEventListener('change', async ({target}) => {
+    const { value, id } = target
+    enluminure.setOptions({
+      [id]: value
+    })
+
+    renderAndDisplay()
+  })
+))
+
+document.querySelector('#change_file')
+?.addEventListener('change', async ({target}) => {
+  await enluminure.loadImage(target.files[0])
+  renderAndDisplay()
+})

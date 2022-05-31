@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Asciify Elon</title>
+    <title>Enluminure</title>
+
+    <link rel="stylesheet" href="./style.css">
   </head>
   <body>
     <aside class="presets">
@@ -14,14 +16,11 @@
 
     <main id="app">
       <section id="pics">
-        <label for="change_file" style="cursor: pointer;">
-          <img src="./pics/original.jpg" id="src_picture" alt="Jesus">
-        </label>
-        <input type="file" name="change_file" id="change_file" style="display: none;">
+        <input type="file" name="change_file" id="change_file" />
       </section>
 
-      <!-- <div>
-        <h1>Asciify ELON</h1>
+      <div>
+        <h1>Enluminure</h1>
 
         <div class="fieldset">
           <label>Background color</label>
@@ -65,7 +64,7 @@
 
         <div class="fieldset">
           <label>Jitter chance</label>
-          <input type="range" id="jitterProbability" class="param_input" min="0" max="100" value="0" step="5" />
+          <input type="range" id="jitterProbability" class="param_input" min="0" max="1" value="0" step="0.1" />
         </div>
 
         <div class="fieldset">
@@ -94,7 +93,7 @@
           <select id="characterDistribution" class="param_input">
           </select>
         </div>
-      </div> -->
+      </div>
     </main>
 
     <script type="module" src="./main.ts"></script>
