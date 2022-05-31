@@ -53,7 +53,7 @@ class Enluminure{
     this.drawCanvas.height = this.dimensions.h
   }
 
-  private imageLoader(file: File) : Promise<HTMLImageElement> {
+  private imageLoader(file: File | Blob) : Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const img = new Image()
       img.addEventListener('load', () => resolve(img))
@@ -69,6 +69,15 @@ class Enluminure{
     
     return position + (Math.floor((seed - 0.5) * maxOffset))
   }
+
+  private getCurrentChar(row: number, col: number) : number{
+    if(this.options.characterDistribution === CharacterDistributions.ROW)
+      return col % this.options.characterPool.length
+    if(this.options.characterDistribution === CharacterDistributions.COLUMN)
+      return row % this.options.characterPool.length
+
+    return Math.random() * this.options.characterPool.length | 0
+  }
   
   public constructor(options?: Partial<AsciifyOptionsType>){
     this.refCanvas = document.createElement('canvas')
@@ -76,14 +85,14 @@ class Enluminure{
     this.options = {
       backgroundColor: options?.backgroundColor || '#000',
       characterDistribution: options?.characterDistribution || CharacterDistributions.ROW,
-      characterPool: options?.characterPool || 'AŝçîiFÿ',
+      characterPool: options?.characterPool || 'ËNłÛMÍИЦR€',
       focusGradientOpacity: options?.focusGradientOpacity || 0,
-      fontFamily: 'monospace',
+      fontFamily: options?.fontFamily || 'monospace',
       fontSize: options?.fontSize || 6,
+      hueMax: options?.hueMax || 60,
       hueMin: options?.hueMin || 0,
-      hueMax: options?.hueMax || 10,
       hueRotation: options?.hueRotation || HueRotations.LINEAR_FW,
-      jitterChance: options?.jitterChance || 0,
+      jitterProbability: options?.jitterProbability || 0,
       luminanceFactor: options?.luminanceFactor || 100,
       maxJitterOffsetX: options?.maxJitterOffsetX || 0,
       maxJitterOffsetY: options?.maxJitterOffsetY || 0,
@@ -95,7 +104,17 @@ class Enluminure{
     return this
   }
 
-  public async loadImage(file: File) : Promise<number | undefined>{
+  public async loadImage(file: File | Blob | string) : Promise<DimensionsType>{
+    if(typeof file === 'string'){
+      const path = file
+      try{
+        const request = await fetch(path)
+        file = await request.blob()
+      }
+      catch(err){
+        throw Error('Invalid image url')
+      }
+    }
     try{
       const img = await this.imageLoader(file)
       this.setDimensions(img.width, img.height)
@@ -104,19 +123,21 @@ class Enluminure{
       ctx?.drawImage(img, 0, 0)
       this.imageData = ctx?.getImageData(0, 0, this.dimensions.w, this.dimensions.h)
 
-      return (this.imageData?.data.length || 0) / 4
+      return this.dimensions
     }
     catch(err){
       throw TypeError('Invalid input (not an image, or unsupported format)')
     }
   }
 
-  public setOptions(options: Partial<AsciifyOptionsType>) : void {
+  public setOptions(options: Partial<AsciifyOptionsType>){
     this.options = { ...this.options, ...options}
     
     if(options.hasOwnProperty('tileSize') && this.imageData !== undefined){
       this.setDimensions(this.imageData?.width, this.imageData?.height)
     }
+
+    return this
   }
 
   public render(target?: string) : string {
@@ -141,7 +162,7 @@ class Enluminure{
     ctx.fillRect(0, 0, this.dimensions.w, this.dimensions.h)
     ctx.font = this.options.fontSize + 'px ' + this.options.fontFamily
     ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
+    ctx.textBaseline = 'top'
 
     for(let row=0; row<rowNb; row++){
       for(let col=0; col<colNb; col++){
@@ -151,19 +172,13 @@ class Enluminure{
         const b = this.imageData.data[index+2]
 
         const luminance = (r + g + b) / 765 * this.options.luminanceFactor | 0
-        const currentCharacter = this.options.characterPool.charAt(
-          this.options.characterDistribution === CharacterDistributions.ROW ? 
-          row % this.options.characterPool.length
-          : this.options.characterDistribution === CharacterDistributions.COLUMN ?
-          col % this.options.characterPool.length
-          : Math.random() * this.options.characterPool.length
-        )
+        const currentCharacter = this.options.characterPool.charAt(this.getCurrentChar(row, col))
         
         ctx.fillStyle = `hsl(${hue}, ${this.options.saturation}%, ${luminance}%)`
         ctx.fillText(
           currentCharacter, 
-          this.jitter(col * this.options.tileSize, this.options.jitterChance, this.options.maxJitterOffsetX),
-          this.jitter(row * this.options.tileSize, this.options.jitterChance, this.options.maxJitterOffsetY)
+          this.jitter(col * this.options.tileSize, this.options.jitterProbability, this.options.maxJitterOffsetX),
+          this.jitter(row * this.options.tileSize, this.options.jitterProbability, this.options.maxJitterOffsetY)
         )
 
         const nextHue = this.getHueRotation[this.options.hueRotation](minHue, maxHue, direction, hue)

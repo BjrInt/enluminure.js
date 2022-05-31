@@ -1,14 +1,14 @@
 export enum HueRotations {
-  LINEAR_FW = "Linear Forward",
-  LINEAR_FWBW = "Linear Back&Forth",
-  RANDOM = "Random",
-  SCATTER = "Scattered",
+  LINEAR_FW = "LINEAR_FORWARD",
+  LINEAR_FWBW = "LINEAR_BACK_FORTH",
+  RANDOM = "RANDOM",
+  SCATTER = "SCATTERED",
 }
 
 export enum CharacterDistributions {
-  COLUMN,
-  ROW,
-  RANDOM
+  COLUMN = "COLUMN",
+  ROW = "ROW",
+  RANDOM = "RANDOM"
 }
 
 export type NextHueType = [number, number]
@@ -23,7 +23,7 @@ export type AsciifyOptionsType = {
   hueMax: number,
   hueMin: number,
   hueRotation: HueRotations,
-  jitterChance: number,
+  jitterProbability: number,
   luminanceFactor: number,
   maxJitterOffsetX: number,
   maxJitterOffsetY: number,
