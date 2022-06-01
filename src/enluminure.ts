@@ -79,7 +79,7 @@ class Enluminure{
     this.refCanvas = document.createElement('canvas')
     this.drawCanvas = document.createElement('canvas')
     this.options = {
-      backgroundColor: options?.backgroundColor || '#000',
+      backgroundColor: options?.backgroundColor || '#000000',
       characterDistribution: options?.characterDistribution || CharacterDistributions.ROW,
       characterPool: options?.characterPool || 'ËNłÛMÍИЦR€',
       focusGradientOpacity: options?.focusGradientOpacity || 0,
@@ -119,10 +119,17 @@ class Enluminure{
       ctx?.drawImage(img, 0, 0)
       this.imageData = ctx?.getImageData(0, 0, this.dimensions.w, this.dimensions.h)
 
-      return this.dimensions
+      return this.getDimensions()
     }
     catch(err){
       throw TypeError('Invalid input (not an image, or unsupported format)')
+    }
+  }
+
+  public getDimensions(){
+    return {
+      w: this.dimensions.w - (this.dimensions.w % this.options.tileSize),
+      h: this.dimensions.h - (this.dimensions.h % this.options.tileSize),
     }
   }
 
@@ -154,13 +161,12 @@ class Enluminure{
     
     this.drawCanvas.width = this.options.tileSize * colNb
     this.drawCanvas.height = this.options.tileSize * rowNb
-    
+
     ctx.fillStyle = this.options.backgroundColor
     ctx.fillRect(0, 0, this.dimensions.w, this.dimensions.h)
     ctx.font = this.options.fontSize + 'px ' + this.options.fontFamily
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
-
 
     for(let row=0; row<rowNb; row++){
       for(let col=0; col<colNb; col++){
@@ -184,6 +190,22 @@ class Enluminure{
         direction = nextHue[1] 
       }
     }
+
+    const gradientRadius = Math.sqrt(this.dimensions.w**2 + this.dimensions.h**2)
+    const focusGradient = ctx.createRadialGradient(
+      this.dimensions.w / 2 | 0, 
+      this.dimensions.h / 2 | 0,
+      Math.sqrt(gradientRadius),
+      0,
+      0,
+      gradientRadius
+    )
+    focusGradient.addColorStop(0, 'transparent')
+    focusGradient.addColorStop(1, 'black')
+    ctx.globalAlpha = this.options.focusGradientOpacity / 100
+    ctx.fillStyle = focusGradient
+    ctx.fillRect(0, 0, this.dimensions.w, this.dimensions.h)
+    ctx.globalAlpha = 1
     
     return this.drawCanvas.toDataURL(target)
   }
