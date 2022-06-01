@@ -1,4 +1,4 @@
-# Enluminure
+# enluminure.js
 
 > "Enluminure" /ɑ̃.ly.mi.nyʁ/ is a french word meaning the technique of illuminating manuscript with flourishes and drawings in order to beautify the text content.
 
@@ -114,7 +114,12 @@ const component = () => {
 
 You can specify options from the start using the constructor or using the `setOptions` method. There are several options available. Make sure to fine tune each of them. Possibilities are nearly endless, from suggestive numeric art to near-copy of the source, there is a lot of room to explore in between!
 
-All parameters give deterministic output excepted the one marked with a **\***
+All parameters give deterministic output excepted:
+
+- Those used with the RANDOM preset (hueRotation, characterDistribution)
+- The jitter function
+
+This means you can easily predict an output based on input parameters.
 
 <table>
 <tr>
@@ -127,7 +132,7 @@ All parameters give deterministic output excepted the one marked with a **\***
 <tr>
   <td>backgroundColor</td>
   <td>A color string (Hex, rgb(), hsl())</td>
-  <td>'#000'</td>
+  <td>'#000000'</td>
   <td>The background color of the generated enluminure</td>
 </tr>
 
@@ -255,6 +260,14 @@ const customEnluminure = new Enluminre({
 ### async loadImage(source: _path_ | _File_ | _Blob_)
 
 Loads a reference image for the enluminure. If the file is succesfully loaded returns the dimensions of the enluminure to render.
+
+### getDimensions()
+
+Returns the dimensions of the enluminure to be generated. The size of the enluminure could be slightly smaller than the source picture, since it is always a multiple of the `tileSize` parameter.
+
+### getOptions()
+
+Returns the enluminure current options.
 
 #### Using a file input
 
