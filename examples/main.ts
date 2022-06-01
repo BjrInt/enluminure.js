@@ -1,5 +1,6 @@
 import Enluminure from "../src/enluminure"
 import { CharacterDistributions, HueRotations } from "../src/types"
+import createModal from "./createModal"
 
 const enluminure = new Enluminure()
 
@@ -57,4 +58,12 @@ document.querySelector('#change_file')
   // @ts-ignore
   await enluminure.loadImage(target.files[0])
   renderAndDisplay()
+})
+
+document.querySelector('#export-preset').addEventListener('click', () => {
+  createModal(JSON.stringify(enluminure.getOptions()), renderAndDisplay, enluminure, true)
+})
+
+document.querySelector('#import-preset').addEventListener('click', () => {
+  createModal('', renderAndDisplay, enluminure, false)
 })
