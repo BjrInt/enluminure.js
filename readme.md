@@ -1,5 +1,7 @@
 # enluminure.js
 
+## [Sandbox Demo](https://eager-borg-9ca6b3.netlify.app/)
+
 > "Enluminure" /ɑ̃.ly.mi.nyʁ/ is a french word meaning the technique of illuminating manuscript with flourishes and drawings in order to beautify the text content.
 
 Although the french term means creating a picture alongside a written text, this javascript library turns any picture into a a composition of colorful letters. It uses canvases internally to perform the conversion, so it only works inside of browsers.
